@@ -1,0 +1,84 @@
+Advanced CSV Data Analyzer — Run Instructions
+
+Summary:
+This project is a single-file Streamlit application (`csv_analyzer.py`) that provides an interactive web UI for exploring, cleaning, visualizing, and running small deep-learning demos on CSV tabular data. It includes EDA tools, cleaning utilities, PCA/visualizations, and optional DL demos (MLP, LSTM, CNN examples). The utilities are split into the `utils/` package.
+
+Quick PowerShell steps to run locally (Windows):
+
+1) Verify Python is installed (recommended Python 3.8+):
+
+```powershell
+python --version
+```
+
+2) From the project root (the folder containing `csv_analyzer.py`), create and activate a virtual environment:
+
+```powershell
+cd "c:\Users\Aarav Comp\Desktop\CSV Aalyzer"
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+```
+
+If activation fails due to execution policy, run (may require elevated rights):
+
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+.\.venv\Scripts\Activate.ps1
+```
+
+Alternative activation using cmd:
+
+```powershell
+cmd /c ".venv\\Scripts\\activate.bat"
+```
+
+3) Install base dependencies listed in `requirements.txt`:
+
+```powershell
+pip install -r .\requirements.txt
+```
+
+4) Optional: install TensorFlow for deep-learning demos (DL features require TensorFlow for full functionality):
+
+```powershell
+pip install tensorflow
+# or for a CPU-only wheel if needed:
+# pip install tensorflow-cpu
+```
+
+5) Run the Streamlit app:
+
+```powershell
+streamlit run "c:\Users\Aarav Comp\Desktop\CSV Aalyzer\csv_analyzer.py"
+```
+
+Or, from the project directory:
+
+```powershell
+cd "c:\Users\Aarav Comp\Desktop\CSV Aalyzer"
+streamlit run csv_analyzer.py
+```
+
+What to expect:
+- Streamlit will open a local URL (usually http://localhost:8501). Open it in a browser.
+- Use the file uploader to load your CSV, or try the included sample files (`patients.csv`, `earthquake_data_tsunami.csv`).
+- The UI tabs: Overview, Clean Data, Analysis, DL Concepts. Deep-learning demos will only work if TensorFlow is installed.
+
+Troubleshooting tips:
+- Wrap paths with spaces in quotes when running `streamlit run`.
+- If `streamlit` is not found, ensure the virtual environment is activated or that you installed dependencies into the correct Python environment.
+- Activation blocked by PowerShell execution policy: either adjust the policy for the current user (RemoteSigned) or use the cmd activation script.
+- Large datasets or DL training can be slow on CPU-only systems; reduce epochs or sample the data for testing.
+
+Files of interest:
+- `csv_analyzer.py` — main Streamlit app (entrypoint)
+- `requirements.txt` — base dependencies (streamlit, pandas, numpy, matplotlib, seaborn, plotly, scikit-learn)
+- `utils/` — helper modules for UI, EDA, cleaning, and DL demos
+- `patients.csv`, `earthquake_data_tsunami.csv` — sample CSVs included in the workspace
+
+Optional follow-ups you can ask me to implement:
+- Add a `run.ps1` script that automates venv creation, activation, install, and runs the app
+- Create `requirements-dl.txt` with pinned TensorFlow and DL extras
+- Add a small example CSV for the LSTM sequence demo
+
+Last updated: October 28, 2025
