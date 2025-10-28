@@ -1,0 +1,95 @@
+CSV Aalyzer — Code Overview
+
+This file explains each Python module in the project and summarizes the functionality and Deep Learning (DL) features present or referenced. Use this as a quick map for contributors or users.
+
+Project root
+------------
+- csv_analyzer.py
+  - Entry point: a Streamlit app that composes the UI from modules in `utils/`.
+  - Mounts tabs: Overview, Clean Data, Analysis, DL Concepts.
+  - Handles file upload, session state (`st.session_state.original_df`, `st.session_state.df`), and wiring of each tab function.
+  - Note: DL demos may require `tensorflow` installed to work fully (the app attempts to import TF in some code paths).
+
+- requirements.txt
+  - Lists base dependencies to run the app: streamlit, pandas, numpy, matplotlib, seaborn, plotly, scikit-learn.
+  - TensorFlow is intentionally NOT in this file; install it separately if you want the DL demos.
+
+- RUN_INSTRUCTIONS.txt
+  - Quick run guide (PowerShell) and troubleshooting tips. Created to make launching the app easier on Windows.
+
+- patients.csv, earthquake_data_tsunami.csv (sample data files)
+  - Example CSV datasets included in the workspace. Use these with the file uploader in the app to test functionality.
+
+utils/ package
+---------------
+- utils/ui_utils.py
+  - UI setup helpers: `setup_page()` configures Streamlit page and injects CSS styles.
+  - `safe_rerun()` calls `st.experimental_rerun()` wrapped in try/except to avoid crashes during rerun attempts.
+  - Purpose: centralize cosmetic styles and a safe rerun helper used by cleaning operations.
+
+- utils/overview_tab.py
+  - `show_overview_tab(df)` displays dataset head, basic metadata (rows, columns, dtypes), descriptive statistics, and missing values summary.
+  - Provides a download button to export the current dataset state as `cleaned_data.csv`.
+
+- utils/cleaning_tab.py
+  - `show_cleaning_tab(df, st_state)` provides interactive cleaning tools:
+    - Drop columns
+    - Fill missing values (mean, median, mode, or custom)
+    - Convert data types (int/float/str/category)
+    - Filter rows (numeric range slider or categorical selection)
+    - Reset to original data
+  - Uses `safe_rerun()` to refresh UI after changes and writes back to `st_state.df`.
+
+- utils/eda.py
+  - `show_eda_components(df)` aggregates exploratory data analysis components:
+    - Value counts for a chosen column
+    - Correlation matrix with heatmap (pearson/kendall/spearman)
+    - Column-level statistics and visualizations (histograms, box plots, violin plots for numeric; bar/pie for categorical)
+  - Built with matplotlib/seaborn and Streamlit plotting helpers.
+
+- utils/linear_classifier.py
+  - `linear_classifier_section(df, all_cols)` UI to train a linear classifier (Logistic Regression or Linear SVM).
+  - Preprocessing: selects numeric features, optional standardization (StandardScaler), handles non-numeric targets by encoding categories.
+  - Training and evaluation: splits data, trains model, shows accuracy, classification report, confusion matrix, and 2D decision boundary (if two features).
+  - Exports model using `model_utils.model_pickle_bytes()` and a Streamlit download button.
+  - DL note: this uses scikit-learn models, not TensorFlow.
+
+- utils/mlp.py
+  - `mlp_section(df, all_cols)` exposes a Multi-Layer Perceptron trainer via scikit-learn's `MLPClassifier` / `MLPRegressor`.
+  - Auto-detects classification vs regression (heuristic) or accepts explicit user choice.
+  - Parameters: feature selection, hidden layer sizes, activation, solver, learning rate, max iterations, early stopping, test split, standardization.
+  - Trains model, shows metrics (accuracy, confusion matrix, MSE/RMSE for regression), training loss curve (if available), and allows model download (pickle).
+  - DL note: scikit-learn MLP is used here (not a TensorFlow/Keras model). For heavier DL experiments (CNNs/LSTMs) see the README notes — they may require TensorFlow and are not fully implemented in separate TF modules.
+
+- utils/dl_concepts.py
+  - `show_dl_concepts()` provides interactive, lightweight visualizations to teach DL concepts without requiring heavy frameworks:
+    - Optimization demo: visualize 2D loss surface and simulate optimizers (Gradient Descent, Momentum, RMSProp, Adam).
+    - Backpropagation demo: visualize a small neural net forward pass and activations with selectable activation functions.
+    - Decision surfaces demo: visualize decision boundaries for Linear SVM, logistic regression, and a simple NN; plots loss functions (hinge, 0-1, log loss).
+  - Purpose: pedagogical visualizations and conceptual demos implemented with NumPy and matplotlib + scikit-learn (LinearSVC). No TensorFlow dependency required for these visualizations.
+
+- utils/model_utils.py
+  - Helpers for serializing models and weights:
+    - `model_pickle_bytes(model)` — pickle a scikit-learn model into bytes for Streamlit downloads (uses `joblib`).
+    - `model_weights_bytes(model)` — attempts to save Keras-style model weights to a temporary .h5 file and return bytes (used when TensorFlow/Keras models are present).
+  - Note: `model_weights_bytes` will only work for TF/Keras models; calling it without `tensorflow`-compatible model objects will raise or fail.
+
+Notes about Deep Learning features
+---------------------------------
+- What is present in code:
+  - Pedagogical DL visualizations in `utils/dl_concepts.py` (optimizers, backprop, decision surfaces) implemented with NumPy/matplotlib.
+  - Scikit-learn MLP via `utils/mlp.py` for quick tabular MLP experiments (classification/regression) — not a TensorFlow model.
+  - `utils/model_utils.py` contains helpers aimed at supporting both scikit-learn and Keras/TensorFlow models (the latter via `model.save_weights()` in a temporary file), but the project does not include full TF model training scripts in separate modules (no dedicated `lstm.py`, `cnn.py`, or `vae.py` in `utils/` as of this snapshot).
+
+- What README mentions (and implications):
+  - The README advertises additional DL demos (LSTM sequence demo, CNN demos for MNIST/CIFAR, MobileNetV2 transfer learning, and a dense VAE). These are described as "Deep Learning demos (optional, require TensorFlow)" but they are not present as separate TF modules in `utils/` in this code snapshot. If you need these demos, they must either be implemented in new modules or added into `csv_analyzer.py`/`utils/` with proper TensorFlow imports and gating.
+  - Recommendation: install `tensorflow` only if you plan to implement or use TF-based demos. Many code paths attempt to detect TF, but some parts may assume `tf` exists and will error without it.
+
+Next actions you might want me to do
+-----------------------------------
+- Add small TF examples (LSTM/CNN/VAE) into `utils/` and a `requirements-dl.txt` that pins a compatible `tensorflow` version.
+- Implement safer TF gating: detect `tensorflow` import at startup and disable/hide TF-specific UI when not available.
+- Add a `run.ps1` script to automate venv creation, dependency install, and app start.
+- Create small, curated example CSVs for sequence and image tasks (if adding LSTM/CNN demos).
+
+Last updated: October 28, 2025
