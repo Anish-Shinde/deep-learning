@@ -9,7 +9,7 @@ def show_overview_tab(df):
     """Display the Overview tab content."""
     st.subheader("🔍 Dataset Overview")
     if df is None:
-        st.info("📁 Please upload a CSV file to get started.")
+        
         return
 
     st.dataframe(df.head(), width='stretch')
