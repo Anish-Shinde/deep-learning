@@ -1,94 +1,204 @@
-# Advanced CSV Data Analyzer + Deep Learning Demos
+# Advanced CSV Data Analyzer
 
 ## Overview
 
-This is a single-file Streamlit application (`csv_analyzer.py`) that provides an interactive web UI to explore, clean, visualize, and run small deep-learning demos on CSV tabular data. It's intended for quick, beginner-friendly exploration of datasets and light experimentation with models.
+A comprehensive, user-friendly web application built with Streamlit for analyzing, cleaning, and building machine learning models with CSV data files. This tool provides an interactive, no-code interface for data exploration, transformation, and machine learning model training.
 
-Key features:
+## Key Features
 
-- Upload and inspect CSV files (head, data types, descriptive statistics).
-- Cleaning & transformation: drop columns, fill missing values (mean/median/mode/custom), convert column types, filter rows, reset to original.
-- Exploratory Data Analysis (EDA): value counts, correlation matrix with heatmap, histograms, box/violin plots, bar/pie charts.
-- Visualizations: 2D/3D scatter (Plotly), histograms, box plots, scatter/line/bar, and a 3D scatter for numeric triples.
-- PCA: dimensionality reduction with explained variance and 2D/3D plotting of principal components.
-- Deep Learning demos (optional, require TensorFlow):
-  - MLP for tabular classification/regression with training history and basic evaluation.
-  - LSTM demo for sequence data (expects comma-separated numeric sequences in a CSV column). Supports supervised and autoencoder-style training.
-  - CNN demos: MNIST, CIFAR-10, and a transfer-learning example (MobileNetV2 on CIFAR10).
-  - Simple dense Variational Autoencoder (VAE) for representation learning on numeric features.
+### 📊 Data Explorer Tab
+- **Dataset Overview**: Quick inspection of your data with head preview, metadata (rows, columns, data types), and descriptive statistics
+- **Missing Values Analysis**: Identify and analyze missing data with percentage breakdowns
+- **Data Export**: Download cleaned/transformed datasets as CSV files
 
-## Files
+### 🔧 Data Transformation Tab
+- **Column Management**: Drop unwanted columns with confirmation warnings
+- **Missing Value Imputation**: Fill missing values using Mean, Median, Mode, or custom values
+- **Data Type Conversion**: Convert columns to int, float, str, or category types
+- **Row Filtering**: Filter data by numeric ranges or categorical values with preview
+- **Reset Functionality**: Restore original dataset with one click
 
-- `csv_analyzer.py` — main Streamlit application (single file). Contains all UI and logic described above.
-- `patients.csv` — example dataset present in the workspace (if provided).
-- `requirements.txt` — dependency list (install with `pip install -r requirements.txt`).
+### 📈 Analytics & Modeling Tab
+- **Exploratory Data Analysis (EDA)**:
+  - Value counts for categorical columns
+  - Correlation matrices with heatmaps (Pearson, Kendall, Spearman)
+  - Column-level statistics and visualizations (histograms, box plots, violin plots for numeric; bar/pie charts for categorical)
+- **Machine Learning Models**:
+  - **MLP (Multi-Layer Perceptron)**: Train neural networks for both classification and regression tasks
+    - Auto-detects task type (classification vs regression)
+    - Configurable hidden layers, activation functions, solvers
+    - Training loss curves and comprehensive evaluation metrics
+    - Model export functionality
 
-## How to run (Windows PowerShell)
+### 🧠 Deep Learning Concepts Tab
+- **Optimization Visualizations**: Interactive demos of Gradient Descent, Momentum, RMSProp, and Adam optimizers
+- **Backpropagation Demo**: Visualize neural network forward pass and activations
+- **Decision Surfaces**: Educational visualizations of decision boundaries and loss functions
+- **No TensorFlow Required**: All visualizations run with NumPy and matplotlib
 
-1. Create and activate a virtual environment:
+## Project Structure
 
+```
+├── csv_analyzer.py          # Main Streamlit application entry point
+├── requirements.txt          # Python dependencies
+├── utils/                    # Utility modules
+│   ├── __init__.py
+│   ├── ui_utils.py          # UI setup and styling helpers
+│   ├── overview_tab.py      # Data Explorer tab functionality
+│   ├── cleaning_tab.py      # Data Transformation tab functionality
+│   ├── eda.py               # Exploratory Data Analysis components
+│   ├── mlp.py               # MLP model training and evaluation
+│   ├── dl_concepts.py       # Deep Learning educational visualizations
+│   └── model_utils.py        # Model serialization utilities
+├── CODE_OVERVIEW.txt        # Detailed code documentation
+├── RUN_INSTRUCTIONS.txt     # Setup and deployment guide
+├── README.md                # This file
+└── Sample Data Files:
+    ├── patients.csv
+    └── earthquake_data_tsunami.csv
+```
+
+## Quick Start
+
+### Prerequisites
+- Python 3.8 or higher
+- Internet connection (for first-time package installation)
+
+### Installation & Running
+
+1. **Navigate to project directory:**
+```powershell
+cd "C:\Users\Aarav Comp\Desktop\submission\deep learning"
+```
+
+2. **Create virtual environment:**
 ```powershell
 python -m venv .venv
-.venv\Scripts\Activate.ps1
 ```
 
-2. Install dependencies:
-
+3. **Activate virtual environment:**
 ```powershell
-pip install -r .\requirements.txt
+.\.venv\Scripts\Activate.ps1
 ```
+*If activation fails, run: `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser`*
 
-3. Run the Streamlit app:
-
+4. **Install dependencies:**
 ```powershell
-streamlit run "c:\Users\nages\OneDrive\Desktop\CSV Aalyzer\csv_analyzer.py"
+pip install -r requirements.txt
 ```
 
-Notes:
+5. **Run the application:**
+```powershell
+streamlit run csv_analyzer.py
+```
 
-- If you don't plan to use the Deep Learning demos, TensorFlow is optional. If you do want DL features, install TensorFlow (`pip install tensorflow`).
-- Training large models (CIFAR, MobileNet) may be slow on CPU-only machines. Consider reducing epochs or sampling your dataset.
+**Alternative Method (More Reliable):**
+```powershell
+.\.venv\Scripts\python.exe -m streamlit run csv_analyzer.py
+```
 
-## Inputs / Outputs (contract)
+The app will open automatically in your browser at `http://localhost:8501`
 
-- Inputs: CSV file uploaded via the app. For the LSTM demo, a column should contain comma-separated numeric sequences (e.g., `0.1,0.2,0.3`).
-- Outputs: interactive charts, cleaned dataset download (`cleaned_data.csv`), model weights/history download buttons, evaluation metrics and small visualizations (PCA, latent space when applicable).
+For detailed instructions, troubleshooting, and deployment guide, see `RUN_INSTRUCTIONS.txt`.
 
-## Notable implementation details & known issues
+## Usage
 
-1. TensorFlow import detection:
+### Input
+- **CSV Files**: Upload any CSV file through the web interface
+- **Sample Data**: Try the included `patients.csv` or `earthquake_data_tsunami.csv` files
 
-   - The app attempts to import `tensorflow` and falls back to standalone `keras`. Some DL code paths assume `tf` exists (e.g., `tf.keras.datasets`, `tf.image.resize`), so running DL demos without full TensorFlow may fail. Recommendation: install `tensorflow` for full DL support.
-2. Model saving/downloads:
+### Output
+- **Cleaned Datasets**: Download transformed data as `cleaned_data.csv`
+- **Trained Models**: Export MLP models as pickle files (`.pkl`) for later use
+- **Visualizations**: Interactive charts and plots for data analysis
+- **Evaluation Metrics**: Accuracy, confusion matrices, classification reports, MSE/RMSE for regression
 
-   - Some model download code saves weights directly to an in-memory stream or encodes `get_weights()` as text. This is brittle and may not produce a proper weights file. A more reliable approach is to save to a temporary file (e.g., `tempfile`) and offer that file for download.
-3. LSTM sequence parsing:
+## Features & Advantages
 
-   - The sequence parser tries to convert comma-separated tokens to floats. If no valid sequences are found or sequences vary widely in length, the code may error or produce unexpected padding. The app should validate and inform how many rows were parsed.
-4. Heuristic task detection for MLP:
+### User-Friendly Interface
+- **No Coding Required**: All operations are point-and-click
+- **Comprehensive Error Handling**: Clear error messages with helpful hints
+- **Input Validation**: Proactive warnings and guidance throughout
+- **Real-time Feedback**: Preview changes before applying transformations
 
-   - The app auto-detects regression vs classification using a simple heuristic on the target column (numeric with >20 unique values = regression). This can misclassify some label types. Consider an explicit user override.
-5. Large datasets and performance:
+### Robust Data Processing
+- **Smart Validation**: Prevents common mistakes (e.g., using target as feature)
+- **Missing Value Handling**: Multiple imputation strategies with validation
+- **Data Type Management**: Intelligent type conversion with error handling
+- **Filter Preview**: See how many rows will remain before applying filters
 
-   - Heavy operations (training CNNs, PCA on very large tables) can be slow or memory-intensive. Consider sampling or adding dataset size checks.
+### Machine Learning Capabilities
+- **Flexible MLP Models**: Supports both classification and regression
+- **Auto-detection**: Automatically determines task type or allows manual override
+- **Comprehensive Metrics**: Detailed evaluation with visualizations
+- **Model Export**: Save trained models for production use
 
-## Suggested low-risk improvements
+### Educational Value
+- **Deep Learning Concepts**: Interactive visualizations without heavy frameworks
+- **Optimization Demos**: Learn how different optimizers work
+- **Neural Network Visualization**: Understand forward pass and backpropagation
 
-- Make DL gating stricter: require real TensorFlow for TF-specific demos or adapt demos to standalone Keras where applicable.
-- Use `tempfile.NamedTemporaryFile` to save models/weights for reliable downloads.
-- Add user-facing validation messages for sequence parsing (rows parsed, max length).
-- Add encoding/one-hot pipelines for categorical features selected as model inputs.
-- Add `st.spinner()` or progress feedback during long-running training.
-- Add a short `README.md` (this file) and a simple example CSV for the LSTM demo.
+## Technologies Used
 
-## Next steps (optional tasks you might want me to do)
+### Core Framework
+- **Streamlit**: Web application framework for interactive data apps
 
-- Implement a robust TensorFlow detection and guard DL features.
-- Fix model save/download to use temporary files.
-- Add a small example CSV and unit tests for the sequence parser.
+### Data Processing
+- **Pandas**: Data manipulation and analysis
+- **NumPy**: Numerical computing and array operations
 
-If you want, I can implement any of those changes now — tell me which one to start with.
+### Machine Learning
+- **Scikit-learn**: MLP models (MLPClassifier, MLPRegressor), preprocessing (StandardScaler), metrics, and train-test split
+
+### Visualization
+- **Matplotlib**: Static plotting and charts
+- **Seaborn**: Statistical data visualization and heatmaps
+
+### Model Serialization
+- **Joblib**: Model saving and loading (pickle format)
+
+## Dependencies
+
+All required packages are listed in `requirements.txt`:
+- streamlit
+- pandas
+- numpy
+- matplotlib
+- seaborn
+- plotly
+- scikit-learn
+
+**Note**: TensorFlow is optional and only needed if you plan to implement additional deep learning features beyond the educational visualizations.
+
+## Documentation
+
+- **CODE_OVERVIEW.txt**: Comprehensive documentation of all modules, algorithms, and packages
+- **RUN_INSTRUCTIONS.txt**: Detailed setup, running, and deployment instructions
+- **HOW_TO_USE_DIAGRAMS.txt**: Guide for generating project diagrams
+
+## Deployment
+
+### Streamlit Cloud
+This app can be easily deployed to Streamlit Cloud:
+1. Push your code to GitHub
+2. Connect your repository to Streamlit Cloud
+3. Deployments happen automatically on every push (1-3 minutes)
+
+See `RUN_INSTRUCTIONS.txt` for detailed deployment information.
+
+## Recent Updates
+
+- ✅ Removed Linear Classifier feature (simplified to MLP only)
+- ✅ Enhanced error handling and user guidance throughout
+- ✅ Added comprehensive input validation and helpful messages
+- ✅ Improved tab names for better clarity
+- ✅ Updated all documentation files
+- ✅ Added deployment instructions
+
+## License
+
+This project is provided as-is for educational and data analysis purposes.
 
 ---
 
-Last updated: October 27, 2025
+**Last updated**: October 28, 2025

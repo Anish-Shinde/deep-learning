@@ -163,4 +163,34 @@ Need Help?
 - Use Method 2 (direct Python) if activation gives you trouble
 - Restart from Step 4 if you encounter errors
 
+Deploying to Streamlit Cloud
+-----------------------------
+If you're using Streamlit Cloud (streamlit.io) connected to your GitHub repository:
+
+**When Updates Appear:**
+- After pushing code to GitHub, Streamlit Cloud automatically detects changes
+- Redeployment usually takes **1-3 minutes** after your push completes
+- You'll see a "Redeploying..." status in your Streamlit Cloud dashboard
+- The app will automatically update once deployment finishes
+
+**How to Check Deployment Status:**
+1. Go to your Streamlit Cloud dashboard (share.streamlit.io)
+2. Look for your app - it will show "Redeploying..." or "Deployed"
+3. Click on your app to see deployment logs and status
+4. Green checkmark = successfully deployed
+5. Red X = deployment failed (check logs for errors)
+
+**Manual Redeploy:**
+- In Streamlit Cloud dashboard, click "⋮" (three dots) next to your app
+- Select "Redeploy" to manually trigger a new deployment
+
+**Troubleshooting Deployment:**
+- If changes don't appear after 5 minutes, check:
+  - Did you push to the correct branch? (usually `main` or `master`)
+  - Are there any errors in the deployment logs?
+  - Is your `requirements.txt` up to date with all dependencies?
+  - Check that `csv_analyzer.py` is in the root directory
+
+**Note:** The first deployment may take longer (5-10 minutes) as it installs all dependencies.
+
 Last updated: October 28, 2025

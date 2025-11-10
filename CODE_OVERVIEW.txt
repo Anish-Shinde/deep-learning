@@ -15,7 +15,7 @@ This application provides a comprehensive, user-friendly platform for data analy
    - Advantage: Clean and prepare your data interactively. No need to write pandas code - everything is point-and-click.
 
 3. **Comprehensive Analytics (Analytics & Modeling Tab)**
-   - Feature: Exploratory data analysis (correlation matrices, value counts, visualizations), linear classifiers, and MLP models
+   - Feature: Exploratory data analysis (correlation matrices, value counts, visualizations) and MLP models for classification and regression
    - Advantage: Perform complete data analysis and build machine learning models without coding. Get visual insights and trained models ready to download.
 
 4. **Educational Deep Learning Concepts (Deep Learning Concepts Tab)**
@@ -43,17 +43,7 @@ Algorithms, Models & Packages Used
 This section details all the algorithms, machine learning models, and Python packages utilized in the project.
 
 **Machine Learning Algorithms & Models:**
-1. **Logistic Regression** (from scikit-learn)
-   - Used for: Binary and multi-class classification
-   - Location: `utils/linear_classifier.py`
-   - Features: Probabilistic linear classifier, outputs class probabilities
-
-2. **Linear Support Vector Machine (LinearSVC)** (from scikit-learn)
-   - Used for: Binary and multi-class classification
-   - Location: `utils/linear_classifier.py`, `utils/dl_concepts.py`
-   - Features: Maximizes margin between classes, uses hinge loss
-
-3. **Multi-Layer Perceptron (MLP)** (from scikit-learn)
+1. **Multi-Layer Perceptron (MLP)** (from scikit-learn)
    - Used for: Classification and regression tasks
    - Location: `utils/mlp.py`
    - Models: `MLPClassifier` (classification), `MLPRegressor` (regression)
@@ -64,7 +54,7 @@ This section details all the algorithms, machine learning models, and Python pac
      - Early stopping support
      - Training loss curve visualization
 
-4. **Optimization Algorithms** (custom implementations)
+2. **Optimization Algorithms** (custom implementations)
    - Used for: Educational visualization of optimization techniques
    - Location: `utils/dl_concepts.py`
    - Algorithms implemented:
@@ -73,7 +63,7 @@ This section details all the algorithms, machine learning models, and Python pac
      - RMSProp (Root Mean Square Propagation)
      - Adam (Adaptive Moment Estimation)
 
-5. **Neural Network Forward Pass & Backpropagation** (custom implementation)
+3. **Neural Network Forward Pass & Backpropagation** (custom implementation)
    - Used for: Educational visualization of neural network operations
    - Location: `utils/dl_concepts.py`
    - Features: Custom forward pass with configurable activation functions (sigmoid, tanh, ReLU)
@@ -81,32 +71,32 @@ This section details all the algorithms, machine learning models, and Python pac
 **Data Preprocessing & Feature Engineering:**
 1. **StandardScaler** (from scikit-learn)
    - Used for: Feature standardization (mean=0, std=1)
-   - Location: `utils/linear_classifier.py`, `utils/mlp.py`
+   - Location: `utils/mlp.py`
    - Purpose: Normalize features for better model performance
 
 2. **Train-Test Split** (from scikit-learn)
    - Used for: Data splitting for model evaluation
-   - Location: `utils/linear_classifier.py`, `utils/mlp.py`
+   - Location: `utils/mlp.py`
    - Method: `train_test_split()` with configurable test size
 
 3. **Categorical Encoding** (pandas)
    - Used for: Converting non-numeric target variables to numeric codes
-   - Location: `utils/linear_classifier.py`, `utils/mlp.py`
+   - Location: `utils/mlp.py`
    - Method: `pd.Categorical().codes`
 
 **Evaluation Metrics:**
 1. **Accuracy Score** (from scikit-learn)
    - Used for: Classification model evaluation
-   - Location: `utils/linear_classifier.py`, `utils/mlp.py`
+   - Location: `utils/mlp.py`
 
 2. **Confusion Matrix** (from scikit-learn)
    - Used for: Detailed classification performance analysis
-   - Location: `utils/linear_classifier.py`, `utils/mlp.py`
+   - Location: `utils/mlp.py`
    - Visualization: Heatmap using seaborn
 
 3. **Classification Report** (from scikit-learn)
    - Used for: Precision, recall, F1-score per class
-   - Location: `utils/linear_classifier.py`, `utils/mlp.py`
+   - Location: `utils/mlp.py`
 
 4. **Mean Squared Error (MSE)** (from scikit-learn)
    - Used for: Regression model evaluation
@@ -176,7 +166,7 @@ This section details all the algorithms, machine learning models, and Python pac
 
 4. **Data Visualization**
    - Types: Histograms, box plots, violin plots, bar charts, pie charts, scatter plots
-   - Location: `utils/eda.py`, `utils/linear_classifier.py`, `utils/mlp.py`
+   - Location: `utils/eda.py`, `utils/mlp.py`
 
 **Model Serialization:**
 1. **Joblib** - For scikit-learn models
@@ -233,13 +223,6 @@ utils/ package
     - Column-level statistics and visualizations (histograms, box plots, violin plots for numeric; bar/pie for categorical)
   - Built with matplotlib/seaborn and Streamlit plotting helpers.
 
-- utils/linear_classifier.py
-  - `linear_classifier_section(df, all_cols)` UI to train a linear classifier (Logistic Regression or Linear SVM).
-  - Preprocessing: selects numeric features, optional standardization (StandardScaler), handles non-numeric targets by encoding categories.
-  - Training and evaluation: splits data, trains model, shows accuracy, classification report, confusion matrix, and 2D decision boundary (if two features).
-  - Exports model using `model_utils.model_pickle_bytes()` and a Streamlit download button.
-  - DL note: this uses scikit-learn models, not TensorFlow.
-
 - utils/mlp.py
   - `mlp_section(df, all_cols)` exposes a Multi-Layer Perceptron trainer via scikit-learn's `MLPClassifier` / `MLPRegressor`.
   - Auto-detects classification vs regression (heuristic) or accepts explicit user choice.
@@ -251,8 +234,8 @@ utils/ package
   - `show_dl_concepts()` provides interactive, lightweight visualizations to teach DL concepts without requiring heavy frameworks:
     - Optimization demo: visualize 2D loss surface and simulate optimizers (Gradient Descent, Momentum, RMSProp, Adam).
     - Backpropagation demo: visualize a small neural net forward pass and activations with selectable activation functions.
-    - Decision surfaces demo: visualize decision boundaries for Linear SVM, logistic regression, and a simple NN; plots loss functions (hinge, 0-1, log loss).
-  - Purpose: pedagogical visualizations and conceptual demos implemented with NumPy and matplotlib + scikit-learn (LinearSVC). No TensorFlow dependency required for these visualizations.
+    - Decision surfaces demo: visualize decision boundaries using Linear SVM (for educational visualization only) and a simple NN; plots loss functions (hinge, 0-1, log loss).
+  - Purpose: pedagogical visualizations and conceptual demos implemented with NumPy and matplotlib + scikit-learn (LinearSVC used only for visualization demos). No TensorFlow dependency required for these visualizations.
 
 - utils/model_utils.py
   - Helpers for serializing models and weights:
@@ -287,5 +270,41 @@ The application includes comprehensive error handling throughout:
 - User input validation: Prevents common mistakes like using target as feature, invalid data types, etc.
 - Graceful error messages: Clear, actionable error messages with hints to help users fix issues
 - Safe operations: All data transformations and model training wrapped in try/except blocks
+
+Recent Updates & Changes
+------------------------
+**Last Major Update: October 28, 2025**
+
+### Removed Features
+- **Linear Classifier**: Removed Logistic Regression and Linear SVM from Analytics & Modeling tab
+  - Reason: Simplified to focus on MLP which handles both classification and regression
+  - The `utils/linear_classifier.py` file still exists but is no longer used by the app
+
+### Enhanced Features
+- **Error Handling**: Comprehensive validation and user-friendly error messages throughout
+- **Input Guidance**: Added helpful tooltips, warnings, and validation messages
+- **User Experience**: Proactive warnings, preview functionality, and clear feedback
+- **Documentation**: Updated all text files to reflect current project state
+
+### UI Improvements
+- **Tab Names**: Updated to more descriptive names:
+  - "Overview" → "📊 Data Explorer"
+  - "Clean Data" → "🔧 Data Transformation"
+  - "Analysis" → "📈 Analytics & Modeling"
+  - "DL Concepts" → "🧠 Deep Learning Concepts"
+
+### Code Quality
+- **Validation**: Pre-validation checks before model training
+- **Error Messages**: Clear, actionable error messages with hints
+- **Safe Operations**: All transformations wrapped in try/except blocks
+- **Compatibility**: Updated to use `st.rerun()` with fallback to `st.experimental_rerun()`
+
+### Documentation Updates
+- Updated `CODE_OVERVIEW.txt` with complete algorithms and packages list
+- Updated `README.md` with current features and structure
+- Updated `RUN_INSTRUCTIONS.txt` with deployment information
+- Removed all references to removed features
+
+---
 
 Last updated: October 28, 2025

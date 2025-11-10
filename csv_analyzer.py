@@ -4,7 +4,6 @@ from utils.ui_utils import setup_page, safe_rerun
 from utils.overview_tab import show_overview_tab
 from utils.cleaning_tab import show_cleaning_tab
 from utils.eda import show_eda_components
-from utils.linear_classifier import linear_classifier_section
 from utils.mlp import mlp_section
 from utils.dl_concepts import show_dl_concepts
 
@@ -41,12 +40,8 @@ def show_analysis_tab(df):
 
     all_cols = df.columns.tolist()
 
-    # Linear Classifier
-    with st.expander("🤖 Linear Classifier (Logistic/SVM)"):
-        linear_classifier_section(df, all_cols)
-
     # MLP
-    with st.expander("🤖 MLP (scikit-learn)"):
+    with st.expander("🤖 MLP (Multi-Layer Perceptron)"):
         mlp_section(df, all_cols)
 
     # EDA Components
