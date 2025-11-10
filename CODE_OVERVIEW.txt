@@ -1,12 +1,198 @@
-CSV Aalyzer — Code Overview
+CSV Analyzer — Code Overview
 
 This file explains each Python module in the project and summarizes the functionality and Deep Learning (DL) features present or referenced. Use this as a quick map for contributors or users.
+
+Key Features & Advantages
+-------------------------
+This application provides a comprehensive, user-friendly platform for data analysis and machine learning. Here are the main features and why they matter:
+
+1. **Interactive Data Exploration (Data Explorer Tab)**
+   - Feature: Quick overview of your dataset with statistics, data types, and missing value analysis
+   - Advantage: Understand your data structure instantly without writing code. Export cleaned data with one click.
+
+2. **Powerful Data Cleaning Tools (Data Transformation Tab)**
+   - Feature: Drop columns, fill missing values (mean/median/mode/custom), convert data types, filter rows
+   - Advantage: Clean and prepare your data interactively. No need to write pandas code - everything is point-and-click.
+
+3. **Comprehensive Analytics (Analytics & Modeling Tab)**
+   - Feature: Exploratory data analysis (correlation matrices, value counts, visualizations), linear classifiers, and MLP models
+   - Advantage: Perform complete data analysis and build machine learning models without coding. Get visual insights and trained models ready to download.
+
+4. **Educational Deep Learning Concepts (Deep Learning Concepts Tab)**
+   - Feature: Interactive visualizations of optimization algorithms, backpropagation, and decision surfaces
+   - Advantage: Learn how deep learning works through hands-on visualizations. No heavy frameworks required - runs with just NumPy and matplotlib.
+
+5. **Robust Error Handling**
+   - Feature: Comprehensive validation and error messages throughout the application
+   - Advantage: Clear feedback when something goes wrong, with helpful hints to fix issues. Prevents crashes and guides users to success.
+
+6. **Model Export & Reusability**
+   - Feature: Download trained models as pickle files for later use
+   - Advantage: Save your work and reuse models in other projects without retraining.
+
+7. **No-Code Machine Learning**
+   - Feature: Train classification and regression models through an intuitive interface
+   - Advantage: Build ML models even if you're not a programmer. Perfect for data scientists, analysts, and students.
+
+8. **Flexible & Extensible**
+   - Feature: Modular code structure with separate utilities for each function
+   - Advantage: Easy to add new features or customize existing ones. Clean separation of concerns makes maintenance simple.
+
+Algorithms, Models & Packages Used
+-----------------------------------
+This section details all the algorithms, machine learning models, and Python packages utilized in the project.
+
+**Machine Learning Algorithms & Models:**
+1. **Logistic Regression** (from scikit-learn)
+   - Used for: Binary and multi-class classification
+   - Location: `utils/linear_classifier.py`
+   - Features: Probabilistic linear classifier, outputs class probabilities
+
+2. **Linear Support Vector Machine (LinearSVC)** (from scikit-learn)
+   - Used for: Binary and multi-class classification
+   - Location: `utils/linear_classifier.py`, `utils/dl_concepts.py`
+   - Features: Maximizes margin between classes, uses hinge loss
+
+3. **Multi-Layer Perceptron (MLP)** (from scikit-learn)
+   - Used for: Classification and regression tasks
+   - Location: `utils/mlp.py`
+   - Models: `MLPClassifier` (classification), `MLPRegressor` (regression)
+   - Features: 
+     - Configurable hidden layers
+     - Activation functions: ReLU, tanh, logistic (sigmoid)
+     - Solvers: Adam, SGD, L-BFGS
+     - Early stopping support
+     - Training loss curve visualization
+
+4. **Optimization Algorithms** (custom implementations)
+   - Used for: Educational visualization of optimization techniques
+   - Location: `utils/dl_concepts.py`
+   - Algorithms implemented:
+     - Gradient Descent (vanilla)
+     - Momentum-based Gradient Descent
+     - RMSProp (Root Mean Square Propagation)
+     - Adam (Adaptive Moment Estimation)
+
+5. **Neural Network Forward Pass & Backpropagation** (custom implementation)
+   - Used for: Educational visualization of neural network operations
+   - Location: `utils/dl_concepts.py`
+   - Features: Custom forward pass with configurable activation functions (sigmoid, tanh, ReLU)
+
+**Data Preprocessing & Feature Engineering:**
+1. **StandardScaler** (from scikit-learn)
+   - Used for: Feature standardization (mean=0, std=1)
+   - Location: `utils/linear_classifier.py`, `utils/mlp.py`
+   - Purpose: Normalize features for better model performance
+
+2. **Train-Test Split** (from scikit-learn)
+   - Used for: Data splitting for model evaluation
+   - Location: `utils/linear_classifier.py`, `utils/mlp.py`
+   - Method: `train_test_split()` with configurable test size
+
+3. **Categorical Encoding** (pandas)
+   - Used for: Converting non-numeric target variables to numeric codes
+   - Location: `utils/linear_classifier.py`, `utils/mlp.py`
+   - Method: `pd.Categorical().codes`
+
+**Evaluation Metrics:**
+1. **Accuracy Score** (from scikit-learn)
+   - Used for: Classification model evaluation
+   - Location: `utils/linear_classifier.py`, `utils/mlp.py`
+
+2. **Confusion Matrix** (from scikit-learn)
+   - Used for: Detailed classification performance analysis
+   - Location: `utils/linear_classifier.py`, `utils/mlp.py`
+   - Visualization: Heatmap using seaborn
+
+3. **Classification Report** (from scikit-learn)
+   - Used for: Precision, recall, F1-score per class
+   - Location: `utils/linear_classifier.py`, `utils/mlp.py`
+
+4. **Mean Squared Error (MSE)** (from scikit-learn)
+   - Used for: Regression model evaluation
+   - Location: `utils/mlp.py`
+
+5. **Root Mean Squared Error (RMSE)** (custom calculation)
+   - Used for: Regression model evaluation
+   - Location: `utils/mlp.py`
+   - Calculation: `sqrt(MSE)`
+
+**Statistical Analysis:**
+1. **Correlation Analysis** (pandas)
+   - Methods: Pearson, Kendall, Spearman correlation
+   - Location: `utils/eda.py`
+   - Visualization: Correlation heatmap
+
+2. **Descriptive Statistics** (pandas)
+   - Methods: `describe()`, `value_counts()`, `isnull().sum()`
+   - Location: `utils/overview_tab.py`, `utils/eda.py`
+
+**Python Packages & Libraries:**
+1. **streamlit** - Web application framework
+   - Purpose: Build interactive web UI for data analysis
+   - Usage: Main UI components, file upload, tabs, widgets
+
+2. **pandas** - Data manipulation and analysis
+   - Purpose: Data loading, cleaning, transformation, analysis
+   - Key features: DataFrame operations, data type handling, missing value management
+
+3. **numpy** - Numerical computing
+   - Purpose: Array operations, mathematical computations, optimization algorithms
+   - Usage: Data preprocessing, custom neural network implementations, numerical calculations
+
+4. **scikit-learn** - Machine learning library
+   - Models: LogisticRegression, LinearSVC, MLPClassifier, MLPRegressor
+   - Preprocessing: StandardScaler
+   - Metrics: accuracy_score, confusion_matrix, classification_report, mean_squared_error
+   - Utilities: train_test_split
+
+5. **matplotlib** - Plotting library
+   - Purpose: Create static visualizations
+   - Usage: Decision boundaries, loss curves, histograms, box plots, correlation heatmaps
+
+6. **seaborn** - Statistical data visualization
+   - Purpose: Enhanced plotting with statistical focus
+   - Usage: Heatmaps, histograms, box plots, violin plots
+
+7. **plotly** - Interactive visualization (listed in requirements, available for future use)
+   - Purpose: Interactive charts and graphs
+
+8. **joblib** - Model serialization
+   - Purpose: Save/load trained models as pickle files
+   - Usage: `utils/model_utils.py` for model export functionality
+
+**Data Processing Techniques:**
+1. **Missing Value Imputation**
+   - Methods: Mean, Median, Mode, Custom value filling
+   - Location: `utils/cleaning_tab.py`
+
+2. **Data Type Conversion**
+   - Types: int, float, str, category
+   - Location: `utils/cleaning_tab.py`
+
+3. **Data Filtering**
+   - Methods: Numeric range filtering, categorical value filtering
+   - Location: `utils/cleaning_tab.py`
+
+4. **Data Visualization**
+   - Types: Histograms, box plots, violin plots, bar charts, pie charts, scatter plots
+   - Location: `utils/eda.py`, `utils/linear_classifier.py`, `utils/mlp.py`
+
+**Model Serialization:**
+1. **Joblib** - For scikit-learn models
+   - Format: Pickle (.pkl files)
+   - Location: `utils/model_utils.py`
+
+2. **HDF5** - For TensorFlow/Keras models (optional, if TensorFlow is installed)
+   - Format: .h5 files
+   - Location: `utils/model_utils.py`
+   - Note: Currently not actively used, but infrastructure is in place
 
 Project root
 ------------
 - csv_analyzer.py
   - Entry point: a Streamlit app that composes the UI from modules in `utils/`.
-  - Mounts tabs: Overview, Clean Data, Analysis, DL Concepts.
+  - Mounts tabs: Data Explorer, Data Transformation, Analytics & Modeling, Deep Learning Concepts.
   - Handles file upload, session state (`st.session_state.original_df`, `st.session_state.df`), and wiring of each tab function.
   - Note: DL demos may require `tensorflow` installed to work fully (the app attempts to import TF in some code paths).
 
@@ -24,7 +210,7 @@ utils/ package
 ---------------
 - utils/ui_utils.py
   - UI setup helpers: `setup_page()` configures Streamlit page and injects CSS styles.
-  - `safe_rerun()` calls `st.experimental_rerun()` wrapped in try/except to avoid crashes during rerun attempts.
+  - `safe_rerun()` safely reruns the Streamlit app using `st.rerun()` (with fallback to `st.experimental_rerun()` for older versions), wrapped in try/except to avoid crashes.
   - Purpose: centralize cosmetic styles and a safe rerun helper used by cleaning operations.
 
 - utils/overview_tab.py
@@ -91,5 +277,15 @@ Next actions you might want me to do
 - Implement safer TF gating: detect `tensorflow` import at startup and disable/hide TF-specific UI when not available.
 - Add a `run.ps1` script to automate venv creation, dependency install, and app start.
 - Create small, curated example CSVs for sequence and image tasks (if adding LSTM/CNN demos).
+
+Error Handling & Validation
+---------------------------
+The application includes comprehensive error handling throughout:
+
+- Data validation: Checks for empty datasets, missing values, and invalid operations
+- Model training validation: Validates feature selection, target variables, and model parameters
+- User input validation: Prevents common mistakes like using target as feature, invalid data types, etc.
+- Graceful error messages: Clear, actionable error messages with hints to help users fix issues
+- Safe operations: All data transformations and model training wrapped in try/except blocks
 
 Last updated: October 28, 2025

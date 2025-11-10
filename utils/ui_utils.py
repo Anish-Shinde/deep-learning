@@ -38,6 +38,10 @@ def setup_page():
 def safe_rerun():
     """Safely rerun the Streamlit app."""
     try:
-        st.experimental_rerun()
+        # Use st.rerun() for newer Streamlit versions, fallback to experimental_rerun() for older versions
+        if hasattr(st, 'rerun'):
+            st.rerun()
+        else:
+            st.experimental_rerun()
     except Exception:
         pass

@@ -7,17 +7,28 @@ from pandas.api.types import is_numeric_dtype
 
 def show_eda_components(df):
     """Display EDA components like value counts and correlations."""
-    if df is None:
+    if df is None or df.empty:
+        st.info("Please upload a CSV file to run exploratory data analysis.")
         return
     
     numeric_cols = df.select_dtypes(include=np.number).columns.tolist()
     all_cols = df.columns.tolist()
 
     with st.expander("📉 Value Counts"):
-        col = st.selectbox("Select column", all_cols, key="value_counts_col")
-        st.write(df[col].value_counts())
+        st.caption("💡 See how many times each value appears in a column")
+        col = st.selectbox(
+            "Select column", 
+            all_cols, 
+            key="value_counts_col",
+            help="Choose a column to see the frequency of each unique value"
+        )
+        if col:
+            value_counts = df[col].value_counts()
+            st.write(value_counts)
+            st.info(f"📊 Column '{col}' has {len(value_counts)} unique value(s)")
 
     with st.expander("📊 Correlation Matrix"):
+        st.caption("💡 Discover relationships between numeric columns. Values range from -1 (negative correlation) to +1 (positive correlation)")
         show_correlation_matrix(df, numeric_cols)
 
     with st.expander("📋 Column Statistics"):
@@ -29,7 +40,8 @@ def show_correlation_matrix(df, numeric_cols):
         corr_method = st.selectbox(
             "Correlation method",
             ["pearson", "kendall", "spearman"],
-            key="corr_method"
+            key="corr_method",
+            help="pearson: Linear relationships. kendall/spearman: Rank-based, good for non-linear relationships."
         )
         
         corr = df[numeric_cols].corr(method=corr_method)
@@ -46,7 +58,13 @@ def show_correlation_matrix(df, numeric_cols):
 
 def show_column_statistics(df, all_cols):
     """Display detailed column statistics with visualizations."""
-    col = st.selectbox("Select a column", all_cols, key="col_stats")
+    st.caption("💡 Detailed analysis and visualizations for individual columns")
+    col = st.selectbox(
+        "Select a column", 
+        all_cols, 
+        key="col_stats",
+        help="Choose a column to see detailed statistics and visualizations"
+    )
     
     if is_numeric_dtype(df[col]):
         show_numeric_column_stats(df, col)

@@ -63,7 +63,7 @@ def main():
     df = load_data(uploaded_file)
 
     # Main tabs
-    tabs = st.tabs(["🔍 Overview", "🧼 Clean Data", "📈 Analysis", "🧠 DL Concepts"])
+    tabs = st.tabs(["📊 Data Explorer", "🔧 Data Transformation", "📈 Analytics & Modeling", "🧠 Deep Learning Concepts"])
 
     # Overview tab
     with tabs[0]:

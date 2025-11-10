@@ -1,0 +1,520 @@
+' ============================================
+' PLANTUML DIAGRAMS FOR CSV ANALYZER PROJECT
+' ============================================
+' Use these codes in PlantUML editor or VS Code extension
+' to generate UML diagrams for your report
+' ============================================
+
+' ============================================
+' DIAGRAM 1: SYSTEM ARCHITECTURE DIAGRAM
+' ============================================
+@startuml System_Architecture
+!define RECTANGLE class
+skinparam direction vertical
+
+title System Architecture - CSV Data Analyzer
+
+package "Presentation Layer" {
+  [Streamlit Web UI] as UI
+  [Tab Navigation] as Tabs
+  [File Uploader] as Upload
+  [Visualization Components] as Viz
+}
+
+package "Business Logic Layer" {
+  [Overview Module] as Overview
+  [Cleaning Module] as Clean
+  [EDA Module] as EDA
+  [ML Module] as ML
+  [DL Concepts Module] as DL
+}
+
+package "Data Processing Layer" {
+  [Data Validation] as Validate
+  [Data Transformation] as Transform
+  [Statistical Analysis] as Stats
+  [Dimensionality Reduction] as PCA
+}
+
+package "Machine Learning Layer" {
+  [Linear Classifier] as Linear
+  [MLP Trainer] as MLP
+  [Model Serialization] as Serialize
+}
+
+package "External Libraries" {
+  [Pandas] as PD
+  [NumPy] as NP
+  [scikit-learn] as SK
+  [matplotlib/seaborn] as PLT
+  [Plotly] as PLY
+}
+
+UI --> Tabs
+Tabs --> Overview
+Tabs --> Clean
+Tabs --> EDA
+Tabs --> ML
+Tabs --> DL
+
+Upload --> Validate
+Clean --> Transform
+EDA --> Stats
+EDA --> PCA
+
+ML --> Linear
+ML --> MLP
+MLP --> Serialize
+
+Overview ..> PD
+Clean ..> PD
+Clean ..> NP
+EDA ..> PD
+EDA ..> PLT
+EDA ..> PLY
+PCA ..> SK
+Linear ..> SK
+MLP ..> SK
+Serialize ..> NP
+
+@enduml
+
+' ============================================
+' DIAGRAM 2: USE CASE DIAGRAM
+' ============================================
+@startuml Use_Case
+top to bottom direction
+title Use Case Diagram - CSV Data Analyzer
+
+actor User as user
+actor "Data Analyst" as analyst
+actor "Student" as student
+
+rectangle "CSV Analyzer System" {
+  usecase "Upload CSV File" as UC1
+  usecase "View Dataset Overview" as UC2
+  usecase "Clean Data" as UC3
+  usecase "Perform EDA" as UC4
+  usecase "Train ML Models" as UC5
+  usecase "Visualize Data" as UC6
+  usecase "Download Cleaned Data" as UC7
+  usecase "Download Trained Models" as UC8
+  usecase "Explore DL Concepts" as UC9
+  usecase "Apply PCA" as UC10
+}
+
+user --> UC1
+user --> UC2
+user --> UC3
+user --> UC4
+user --> UC5
+user --> UC6
+user --> UC7
+
+analyst --> UC1
+analyst --> UC3
+analyst --> UC4
+analyst --> UC5
+analyst --> UC6
+analyst --> UC7
+analyst --> UC8
+
+student --> UC1
+student --> UC4
+student --> UC9
+student --> UC6
+
+UC1 ..> UC2 : <<includes>>
+UC3 ..> UC7 : <<extends>>
+UC5 ..> UC8 : <<extends>>
+UC4 ..> UC6 : <<includes>>
+UC4 ..> UC10 : <<includes>>
+
+@enduml
+
+' ============================================
+' DIAGRAM 3: COMPONENT DIAGRAM
+' ============================================
+@startuml Component_Diagram
+skinparam direction vertical
+title Component Diagram - CSV Data Analyzer
+
+package "Main Application" {
+  [csv_analyzer.py] as Main
+}
+
+package "UI Utilities" {
+  [ui_utils.py] as UIUtils
+}
+
+package "Core Modules" {
+  [overview_tab.py] as Overview
+  [cleaning_tab.py] as Clean
+  [eda.py] as EDA
+  [linear_classifier.py] as Linear
+  [mlp.py] as MLP
+  [dl_concepts.py] as DLConcepts
+}
+
+package "Utility Modules" {
+  [model_utils.py] as ModelUtils
+}
+
+package "External Dependencies" {
+  [Streamlit] as ST
+  [Pandas] as PD
+  [NumPy] as NP
+  [scikit-learn] as SK
+  [matplotlib] as MAT
+  [seaborn] as SNS
+  [Plotly] as PLY
+}
+
+Main --> UIUtils
+Main --> Overview
+Main --> Clean
+Main --> EDA
+Main --> Linear
+Main --> MLP
+Main --> DLConcepts
+
+Clean --> UIUtils
+Linear --> ModelUtils
+MLP --> ModelUtils
+
+Overview ..> PD
+Overview ..> ST
+Clean ..> PD
+Clean ..> NP
+Clean ..> ST
+EDA ..> PD
+EDA ..> MAT
+EDA ..> SNS
+EDA ..> PLY
+EDA ..> ST
+Linear ..> SK
+Linear ..> PD
+Linear ..> NP
+MLP ..> SK
+MLP ..> PD
+MLP ..> NP
+DLConcepts ..> NP
+DLConcepts ..> MAT
+DLConcepts ..> SK
+
+@enduml
+
+' ============================================
+' DIAGRAM 4: ACTIVITY DIAGRAM - MAIN WORKFLOW
+' ============================================
+@startuml Activity_Main_Workflow
+skinparam direction vertical
+title Activity Diagram - Main Application Workflow
+
+start
+
+:User opens Streamlit app;
+:Initialize session state;
+:Display file uploader;
+
+if (File uploaded?) then (yes)
+  :Load CSV file;
+  :Store in session_state.original_df;
+  :Store in session_state.df;
+  :Display success message;
+  
+  fork
+    :Show Overview tab;
+    :Display dataset metadata;
+    :Display statistics;
+  fork again
+    :Show Clean Data tab;
+    :Wait for user actions;
+  fork again
+    :Show Analysis tab;
+    :Wait for user actions;
+  fork again
+    :Show DL Concepts tab;
+    :Display interactive demos;
+  end fork
+  
+  while (User interacting?) is (yes)
+    if (Action in Clean tab?) then (yes)
+      :Apply transformation;
+      :Update session_state.df;
+      :Refresh UI;
+    else (no)
+      if (Action in Analysis tab?) then (yes)
+        :Run EDA/ML;
+        :Generate visualizations;
+        :Display results;
+      else (no)
+        :Handle other actions;
+      endif
+    endif
+  endwhile (no)
+  
+  :User downloads results;
+else (no)
+  :Display info message;
+  :Wait for file upload;
+endif
+
+stop
+
+@enduml
+
+' ============================================
+' DIAGRAM 5: ACTIVITY DIAGRAM - DATA CLEANING PROCESS
+' ============================================
+@startuml Activity_Data_Cleaning
+skinparam direction vertical
+title Activity Diagram - Data Cleaning Process
+
+start
+
+:User navigates to Clean Data tab;
+:Display current dataset info;
+
+:User selects cleaning operation;
+
+if (Operation type?) then (Drop Column)
+  :User selects columns to drop;
+  :Remove selected columns;
+  :Update session_state.df;
+elseif (Fill Missing Values)
+  :User selects column;
+  :User selects fill method\n(mean/median/mode/custom);
+  :Apply fill operation;
+  :Update session_state.df;
+elseif (Convert Data Type)
+  :User selects column;
+  :User selects target type\n(int/float/str/category);
+  :Perform conversion;
+  :Update session_state.df;
+elseif (Filter Rows)
+  :User selects filter criteria;
+  :Apply filter (range/categorical);
+  :Update session_state.df;
+elseif (Reset to Original)
+  :Restore session_state.original_df;
+  :Update session_state.df;
+endif
+
+:Call safe_rerun();
+:Refresh UI with updated data;
+:Display updated dataset preview;
+
+if (User satisfied?) then (no)
+  :Continue cleaning;
+else (yes)
+  :User downloads cleaned data;
+  stop
+endif
+
+@enduml
+
+' ============================================
+' DIAGRAM 6: ACTIVITY DIAGRAM - ML MODEL TRAINING
+' ============================================
+@startuml Activity_ML_Training
+skinparam direction vertical
+title Activity Diagram - ML Model Training Process
+
+start
+
+:User navigates to Analysis tab;
+:User selects ML model type;
+
+if (Model type?) then (Linear Classifier)
+  :Select features (numeric);
+  :Select target column;
+  :Choose classifier\n(Logistic Regression/SVM);
+  :Select preprocessing options;
+  :Split data (train/test);
+  :Train model;
+  :Evaluate model;
+  :Display metrics\n(accuracy, confusion matrix);
+  :Display decision boundary (if 2D);
+elseif (MLP)
+  :Select features;
+  :Select target column;
+  :Auto-detect task type\n(classification/regression);
+  :Configure hyperparameters\n(hidden layers, activation, solver);
+  :Split data;
+  :Train MLP model;
+  :Monitor training loss;
+  :Evaluate model;
+  :Display metrics\n(accuracy/MSE, confusion matrix);
+  :Display training curve;
+endif
+
+:Serialize model using model_utils;
+:Generate download button;
+:User downloads model;
+
+stop
+
+@enduml
+
+' ============================================
+' DIAGRAM 7: SEQUENCE DIAGRAM - DATA PROCESSING FLOW
+' ============================================
+@startuml Sequence_Data_Processing
+skinparam direction vertical
+title Sequence Diagram - Data Processing Flow
+
+actor User
+participant "Streamlit UI" as UI
+participant "csv_analyzer.py" as Main
+participant "overview_tab.py" as Overview
+participant "cleaning_tab.py" as Clean
+participant "eda.py" as EDA
+database "Session State" as Session
+database "CSV File" as CSV
+
+User -> UI: Upload CSV file
+UI -> Main: load_data(uploaded_file)
+Main -> CSV: Read CSV file
+CSV --> Main: DataFrame
+Main -> Session: Store original_df and df
+Main --> UI: Display success message
+
+User -> UI: Navigate to Overview tab
+UI -> Main: show_overview_tab(df)
+Main -> Overview: show_overview_tab(df)
+Overview -> Session: Read df
+Session --> Overview: DataFrame
+Overview -> Overview: Generate statistics
+Overview -> Overview: Generate metadata
+Overview --> UI: Display overview
+UI --> User: Show dataset info
+
+User -> UI: Navigate to Clean Data tab
+UI -> Main: show_cleaning_tab(df, session_state)
+Main -> Clean: show_cleaning_tab(df, st_state)
+Clean -> Session: Read df
+Session --> Clean: DataFrame
+Clean --> UI: Display cleaning interface
+
+User -> UI: Apply cleaning operation
+UI -> Clean: Execute cleaning
+Clean -> Clean: Transform data
+Clean -> Session: Update df
+Clean -> UI: safe_rerun()
+UI --> User: Refresh UI
+
+User -> UI: Navigate to Analysis tab
+UI -> Main: show_analysis_tab(df)
+Main -> EDA: show_eda_components(df)
+EDA -> Session: Read df
+Session --> EDA: DataFrame
+EDA -> EDA: Compute correlations
+EDA -> EDA: Generate visualizations
+EDA --> UI: Display charts
+UI --> User: Show analysis results
+
+@enduml
+
+' ============================================
+' DIAGRAM 8: CLASS DIAGRAM (Simplified)
+' ============================================
+@startuml Class_Diagram
+skinparam direction vertical
+title Class Diagram - Key Components (Conceptual)
+
+class StreamlitApp {
+  +session_state
+  +original_df
+  +df
+  +initialize_session_state()
+  +load_data()
+  +main()
+}
+
+class OverviewTab {
+  +show_overview_tab(df)
+  -display_metadata()
+  -display_statistics()
+  -display_missing_values()
+}
+
+class CleaningTab {
+  +show_cleaning_tab(df, st_state)
+  -drop_columns()
+  -fill_missing_values()
+  -convert_types()
+  -filter_rows()
+  -reset_data()
+}
+
+class EDAModule {
+  +show_eda_components(df)
+  -value_counts()
+  -correlation_matrix()
+  -generate_visualizations()
+}
+
+class LinearClassifier {
+  +linear_classifier_section(df, all_cols)
+  -preprocess_data()
+  -train_model()
+  -evaluate_model()
+  -plot_decision_boundary()
+}
+
+class MLPTrainer {
+  +mlp_section(df, all_cols)
+  -detect_task_type()
+  -train_mlp()
+  -plot_training_curve()
+}
+
+class DLConcepts {
+  +show_dl_concepts()
+  -optimizer_demo()
+  -backprop_demo()
+  -decision_surface_demo()
+}
+
+class ModelUtils {
+  +model_pickle_bytes(model)
+  +model_weights_bytes(model)
+}
+
+class UIUtils {
+  +setup_page()
+  +safe_rerun()
+}
+
+StreamlitApp --> OverviewTab
+StreamlitApp --> CleaningTab
+StreamlitApp --> EDAModule
+StreamlitApp --> LinearClassifier
+StreamlitApp --> MLPTrainer
+StreamlitApp --> DLConcepts
+LinearClassifier ..> ModelUtils
+MLPTrainer ..> ModelUtils
+CleaningTab ..> UIUtils
+
+@enduml
+
+' ============================================
+' END OF PLANTUML DIAGRAMS
+' ============================================
+' 
+' INSTRUCTIONS:
+' 1. Copy each @startuml ... @enduml block separately
+' 2. Paste into PlantUML editor (plantuml.com, VS Code extension, etc.)
+' 3. Export as PNG/SVG/PDF for your report
+' 4. Each diagram represents different aspects of the system
+' 
+' DIAGRAM USAGE:
+' - System Architecture: Chapter 5, overall structure
+' - Use Case: Chapter 5, user interactions
+' - Component: Chapter 5, module relationships
+' - Activity Diagrams: Chapter 6 (Working), process flows
+' - Sequence: Chapter 6, data flow
+' - Class: Chapter 5 (optional), object structure
+' ============================================
+

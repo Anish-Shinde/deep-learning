@@ -17,13 +17,11 @@ Key features:
   - CNN demos: MNIST, CIFAR-10, and a transfer-learning example (MobileNetV2 on CIFAR10).
   - Simple dense Variational Autoencoder (VAE) for representation learning on numeric features.
 
-
 ## Files
 
 - `csv_analyzer.py` — main Streamlit application (single file). Contains all UI and logic described above.
 - `patients.csv` — example dataset present in the workspace (if provided).
 - `requirements.txt` — dependency list (install with `pip install -r requirements.txt`).
-
 
 ## How to run (Windows PowerShell)
 
@@ -47,33 +45,32 @@ streamlit run "c:\Users\nages\OneDrive\Desktop\CSV Aalyzer\csv_analyzer.py"
 ```
 
 Notes:
+
 - If you don't plan to use the Deep Learning demos, TensorFlow is optional. If you do want DL features, install TensorFlow (`pip install tensorflow`).
 - Training large models (CIFAR, MobileNet) may be slow on CPU-only machines. Consider reducing epochs or sampling your dataset.
-
 
 ## Inputs / Outputs (contract)
 
 - Inputs: CSV file uploaded via the app. For the LSTM demo, a column should contain comma-separated numeric sequences (e.g., `0.1,0.2,0.3`).
 - Outputs: interactive charts, cleaned dataset download (`cleaned_data.csv`), model weights/history download buttons, evaluation metrics and small visualizations (PCA, latent space when applicable).
 
-
 ## Notable implementation details & known issues
 
 1. TensorFlow import detection:
+
    - The app attempts to import `tensorflow` and falls back to standalone `keras`. Some DL code paths assume `tf` exists (e.g., `tf.keras.datasets`, `tf.image.resize`), so running DL demos without full TensorFlow may fail. Recommendation: install `tensorflow` for full DL support.
-
 2. Model saving/downloads:
+
    - Some model download code saves weights directly to an in-memory stream or encodes `get_weights()` as text. This is brittle and may not produce a proper weights file. A more reliable approach is to save to a temporary file (e.g., `tempfile`) and offer that file for download.
-
 3. LSTM sequence parsing:
+
    - The sequence parser tries to convert comma-separated tokens to floats. If no valid sequences are found or sequences vary widely in length, the code may error or produce unexpected padding. The app should validate and inform how many rows were parsed.
-
 4. Heuristic task detection for MLP:
+
    - The app auto-detects regression vs classification using a simple heuristic on the target column (numeric with >20 unique values = regression). This can misclassify some label types. Consider an explicit user override.
-
 5. Large datasets and performance:
-   - Heavy operations (training CNNs, PCA on very large tables) can be slow or memory-intensive. Consider sampling or adding dataset size checks.
 
+   - Heavy operations (training CNNs, PCA on very large tables) can be slow or memory-intensive. Consider sampling or adding dataset size checks.
 
 ## Suggested low-risk improvements
 
@@ -83,7 +80,6 @@ Notes:
 - Add encoding/one-hot pipelines for categorical features selected as model inputs.
 - Add `st.spinner()` or progress feedback during long-running training.
 - Add a short `README.md` (this file) and a simple example CSV for the LSTM demo.
-
 
 ## Next steps (optional tasks you might want me to do)
 

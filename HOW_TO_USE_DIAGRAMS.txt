@@ -1,0 +1,86 @@
+HOW TO USE THE DIAGRAMS AND REPORT PROMPT
+==========================================
+
+1. REPORT GENERATION WITH CHATGPT:
+   ---------------------------------
+   Step 1: Open ChatGPT (or similar AI tool)
+   Step 2: Copy the entire contents of REPORT_GENERATION_PROMPT.txt
+   Step 3: Also copy the contents of CODE_OVERVIEW.txt
+   Step 4: Paste both into ChatGPT with this instruction:
+           "I have attached my CODE_OVERVIEW.txt file. Please generate a complete 
+            project report following the structure and instructions in the prompt 
+            I just provided."
+   Step 5: ChatGPT will generate all sections of your report
+   Step 6: Review and edit as needed
+
+2. GENERATING PLANTUML DIAGRAMS:
+   ------------------------------
+   Option A: Online Editor (Easiest)
+   - Go to http://www.plantuml.com/plantuml/uml/
+   - Copy one @startuml ... @enduml block from diagrams.puml
+   - Paste into the editor
+   - Click "Submit" to render
+   - Right-click image and "Save As" (PNG/SVG recommended)
+
+   Option B: VS Code Extension
+   - Install "PlantUML" extension in VS Code
+   - Open diagrams.puml file
+   - Press Alt+D (or right-click and "Preview PlantUML")
+   - Export diagram as PNG/SVG
+
+   Option C: Command Line
+   - Install PlantUML: http://plantuml.com/starting
+   - Run: java -jar plantuml.jar diagrams.puml
+   - This generates PNG files for each diagram
+
+3. WHICH DIAGRAMS TO INCLUDE IN YOUR REPORT:
+   -------------------------------------------
+   For Chapter 5 (UML DIAGRAM):
+   - System Architecture Diagram (required)
+   - Use Case Diagram (required)
+   - Component Diagram (required)
+   - At least one Activity Diagram (recommended: Main Workflow)
+   - Sequence Diagram (recommended)
+
+   For Chapter 6 (WORKING):
+   - Activity Diagram - Data Cleaning Process
+   - Activity Diagram - ML Model Training
+   - Sequence Diagram - Data Processing Flow
+
+4. DIAGRAM DESCRIPTIONS FOR YOUR REPORT:
+   --------------------------------------
+   When including diagrams in Chapter 5, add descriptions like:
+
+   Figure 5.1: System Architecture Diagram
+   "This diagram shows the layered architecture of the CSV Analyzer system,
+   illustrating the separation between Presentation, Business Logic, Data Processing,
+   and Machine Learning layers, along with their dependencies on external libraries."
+
+   Figure 5.2: Use Case Diagram
+   "This diagram represents all possible interactions between different user types
+   (User, Data Analyst, Student) and the system functionalities, showing which
+   features are accessible to each user type."
+
+   Continue this pattern for all diagrams.
+
+5. TIPS:
+   - Generate diagrams one at a time to ensure quality
+   - Use consistent colors/styles (PlantUML has themes)
+   - Adjust diagram sizes in PlantUML if needed
+   - Add captions and figure numbers when inserting into report
+   - Ensure diagrams match the descriptions in your report text
+
+6. PLANTUML THEMES (Optional):
+   ----------------------------
+   Add this line at the start of any diagram for different styles:
+   !theme plain
+   !theme aws-orange
+   !theme bootstrap
+   !theme cerulean
+   !theme cyborg
+
+   Example:
+   @startuml System_Architecture
+   !theme plain
+   ... rest of diagram ...
+
